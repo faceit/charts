@@ -109,7 +109,7 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "{{ default "" .Values.Master.JavaOpts}}"
             - name: JENKINS_OPTS
-              value: "{{ if .Values.Master.JenkinsUriPrefix }}--prefix={{ .Values.Master.JenkinsUriPrefix }} {{ end }}{{ default "" .Values.Master.JenkinsOpts}}"
+              value: "{{ if .Values.Master.JenkinsUriPrefix }}--prefix={{ .Values.Master.JenkinsUriPrefix }} {{ end }}{{ default "" .Values.Master.JenkinsOpts | quote}}"
             {{- if .Values.Master.UseSecurity }}
             - name: ADMIN_PASSWORD
               valueFrom:
