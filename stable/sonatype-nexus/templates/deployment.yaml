@@ -120,12 +120,23 @@ spec:
         - name: nexus-backup
           image: {{ .Values.nexusBackup.imageName }}:{{ .Values.nexusBackup.imageTag }}
           imagePullPolicy: {{ .Values.nexusBackup.imagePullPolicy }}
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+            limits:
+              cpu: 100m
+              memory: 256Mi
           env:
             - name: NEXUS_AUTHORIZATION
               valueFrom:
                 secretKeyRef:
                   key: nexus.nexusAdminPassword
                   name: {{ template "nexus.fullname" . }}
+            {{- if .Values.nexusBackup.gcpServiceAccountEnabled }}
+            - name: CLOUD_IAM_SERVICE_ACCOUNT_KEY_PATH
+              value: {{ .Values.nexusBackup.gcpServiceAccountCredentialsKeyPath | quote }}
+            {{- end }}
             - name: NEXUS_BACKUP_DIRECTORY
               value: /nexus-data/backup
             - name: NEXUS_DATA_DIRECTORY
@@ -145,12 +156,21 @@ spec:
               name: nexus-data
             - mountPath: /nexus-data/backup
               name: nexus-backup
+            {{- if .Values.nexusBackup.gcpServiceAccountEnabled }}
+            - name: google-cloud-key
+              mountPath: /var/secrets/google
+            {{- end }}
         {{- end }}
       {{- if .Values.nexus.securityContext }}
       securityContext:
 {{ toYaml .Values.nexus.securityContext | indent 8 }}
       {{- end }}
       volumes:
+        {{- if .Values.nexusBackup.gcpServiceAccountEnabled }}
+        - name: google-cloud-key
+          secret:
+            secretName: {{ .Values.nexusBackup.gcpServiceAccountCredentialsSecretName }}
+        {{- end }}
         {{- if .Values.nexusProxy.env.cloudIamAuthEnabled }}
         - name: {{ template "nexus.proxy-ks.name" . }}
           secret:
