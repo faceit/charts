@@ -121,12 +121,7 @@ spec:
           image: {{ .Values.nexusBackup.imageName }}:{{ .Values.nexusBackup.imageTag }}
           imagePullPolicy: {{ .Values.nexusBackup.imagePullPolicy }}
           resources:
-            requests:
-              cpu: 25m
-              memory: 128Mi
-            limits:
-              cpu: 100m
-              memory: 256Mi
+{{ toYaml .Values.nexus.resources | indent 12 }}
           env:
             - name: NEXUS_AUTHORIZATION
               valueFrom:
