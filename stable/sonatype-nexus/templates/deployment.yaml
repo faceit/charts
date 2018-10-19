@@ -23,13 +23,17 @@ spec:
       release: {{ .Release.Name }}
   template:
     metadata:
+    {{- if .Values.nexus.podAnnotations }}
+      annotations:
+{{ toYaml .Values.nexus.podAnnotations | indent 8}}
+    {{- end }}
       labels:
         app: {{ template "nexus.name" . }}
         release: {{ .Release.Name }}
     spec:
       {{- if .Values.deployment.initContainers }}
       initContainers:
-{{ toYaml .Values.deployment.initContainers | indent 6 }}      
+{{ toYaml .Values.deployment.initContainers | indent 6 }}
       {{- end }}
       {{- if .Values.nexus.nodeSelector }}
       nodeSelector:
@@ -191,7 +195,7 @@ spec:
             {{- end }}
         {{- end }}
         {{- if .Values.deployment.additionalContainers }}
-{{ toYaml .Values.deployment.additionalContainers | indent 8 }}      
+{{ toYaml .Values.deployment.additionalContainers | indent 8 }}
         {{- end }}
       {{- if .Values.nexus.securityContext }}
       securityContext:
@@ -233,7 +237,7 @@ spec:
             secretName: {{ template "nexus.name" . }}-secret
         {{- end }}
         {{- if .Values.deployment.additionalVolumes }}
-{{ toYaml .Values.deployment.additionalVolumes | indent 8 }}      
+{{ toYaml .Values.deployment.additionalVolumes | indent 8 }}
         {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
