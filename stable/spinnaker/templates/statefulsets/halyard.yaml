@@ -54,7 +54,11 @@ spec:
       {{- if .Values.gcs.enabled }}
       - name: gcs-key
         secret:
+          {{- if .Values.gcs.gcsAccountSecret }}
+          secretName: {{ .Values.gcs.gcsAccountSecret }}
+          {{- else }}
           secretName: {{ template "spinnaker.fullname" . }}-gcs
+          {{- end }}
       {{- end }}
       - name: reg-secrets
         secret:
