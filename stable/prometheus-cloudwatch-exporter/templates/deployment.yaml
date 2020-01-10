@@ -1,4 +1,4 @@
-apiVersion: apps/v1beta2
+apiVersion: {{ template "deployment.apiVersion" . }}
 kind: Deployment
 metadata:
   name: {{ template "prometheus-cloudwatch-exporter.fullname" . }}
@@ -100,6 +100,10 @@ spec:
     {{- end }}
     {{- with .Values.tolerations }}
       tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.securityContext }}
+      securityContext:
 {{ toYaml . | indent 8 }}
     {{- end }}
       volumes:

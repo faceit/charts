@@ -51,7 +51,7 @@ The following table lists the configurable parameters of the Cloudwatch Exporter
 | Parameter                         | Description                                                             | Default                     |
 | --------------------------------- | ----------------------------------------------------------------------- | --------------------------- |
 | `image.repository`                | Image                                                                   | `prom/cloudwatch-exporter`  |
-| `image.tag`                       | Image tag                                                               | `cloudwatch_exporter-0.5.0` |
+| `image.tag`                       | Image tag                                                               | `cloudwatch_exporter-0.6.0` |
 | `image.pullPolicy`                | Image pull policy                                                       | `IfNotPresent`              |
 | `command`                         | Container entrypoint command                                            | `[]`                        |
 | `service.type`                    | Service type                                                            | `ClusterIP`                 |
@@ -74,17 +74,20 @@ The following table lists the configurable parameters of the Cloudwatch Exporter
 | `affinity`                        | node/pod affinities                                                     | `{}`                        |
 | `livenessProbe`                   | Liveness probe settings                                                 |                             |
 | `readinessProbe`                  | Readiness probe settings                                                |                             |
-| `servicemonitor.enabled`          | Use servicemonitor from prometheus operator                             | `false`                     |
-| `servicemonitor.namespace`        | Namespace thes Servicemonitor  is installed in                          |                             |
-| `servicemonitor.interval`         | How frequently Prometheus should scrape                                 |                             |
-| `servicemonitor.telemetryPath`    | path to cloudwatch-exporter telemtery-path                              |                             |
-| `servicemonitor.labels`           | labels for the ServiceMonitor passed to Prometheus Operator             | `{}`                        |
-| `servicemonitor.timeout`          | Timeout after which the scrape is ended                                 |                             |
+| `serviceMonitor.enabled`          | Use servicemonitor from prometheus operator                             | `false`                     |
+| `serviceMonitor.namespace`        | Namespace thes Servicemonitor  is installed in                          |                             |
+| `serviceMonitor.interval`         | How frequently Prometheus should scrape                                 |                             |
+| `serviceMonitor.telemetryPath`    | path to cloudwatch-exporter telemtery-path                              |                             |
+| `serviceMonitor.labels`           | labels for the ServiceMonitor passed to Prometheus Operator             | `{}`                        |
+| `serviceMonitor.timeout`          | Timeout after which the scrape is ended                                 |                             |
+| `serviceMonitor.relabelings`      | RelabelConfigs to apply to samples before scraping.                     |                             |
+| `serviceMonitor.metricRelabelings`| MetricRelabelConfigs to apply to samples before ingestion.              |                             |
 | `ingress.enabled`                 | Enables Ingress                                                         | `false`                     |
 | `ingress.annotations`             | Ingress annotations                                                     | `{}`                        |
 | `ingress.labels`                  | Custom labels                                                           | `{}`                        |
 | `ingress.hosts`                   | Ingress accepted hostnames                                              | `[]`                        |
 | `ingress.tls`                     | Ingress TLS configuration                                               | `[]`                        |
+| `securityContext`                 | Security Context for the pod                                            | `{}`                        |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 

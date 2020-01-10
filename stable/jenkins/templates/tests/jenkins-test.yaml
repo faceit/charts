@@ -1,3 +1,4 @@
+{{- if .Values.master.testEnabled }}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -29,7 +30,11 @@ spec:
         name: tools
   containers:
     - name: {{ .Release.Name }}-ui-test
+{{- if .Values.master.imageTag }}
       image: {{ .Values.master.image }}:{{ .Values.master.imageTag }}
+{{- else }}
+      image: {{ .Values.master.image }}:{{ .Values.master.tag }}
+{{- end }}
       command: ["/tools/bats/bats", "-t", "/tests/run.sh"]
       volumeMounts:
       - mountPath: /tests
@@ -44,3 +49,4 @@ spec:
   - name: tools
     emptyDir: {}
   restartPolicy: Never
+{{- end }}
